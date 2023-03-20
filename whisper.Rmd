@@ -27,6 +27,7 @@ library(data.table)
 # 如果檔案不是 wav 要先轉檔
 av_audio_convert("test.mp3", output = "test.wav", format = "wav", sample_rate = 16000)
 
+# 選擇 model，這邊用的是 medium
 model <- whisper("medium")
 trans <- predict(model, newdata = "test.wav", language = "chinese", n_threads = 2)
 
