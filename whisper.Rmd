@@ -1,0 +1,38 @@
+---
+title: "R Notebook"
+---
+* 測試檔案：https://www.youtube.com/watch?v=GwtqSt8UqSo
+* 成果：scripts.csv
+
+
+```{r}
+Sys.setenv(WHISPER_CFLAGS = "-mavx -mavx2 -mfma -mf16c")
+remotes::install_github("bnosac/audio.whisper", ref = "0.2.1", force = TRUE)
+Sys.unsetenv("WHISPER_CFLAGS")
+
+install.packages("av")
+```
+
+```{r}
+library(audio.whisper)
+library(av)
+library(data.table)
+```
+# model
+* whisper 有 6 種模型（tiny, base, small, medium, large, large-v2），愈大的檔案需要愈大的模型（如果一跑就 crush 代表需要換大一點的）
+  * 我自己測試我的電腦只能裝到 medium，large 載不下來...(不知道是不是因為需要 token，但找不到可以寫 token 的地方)
+* 愈大的翻譯愈快，但所需資源也愈多，[文件參考 Available models and languages 那一節]("https://github.com/openai/whisper/blob/main/README.md")
+* [可用語言列表]("https://github.com/openai/whisper/blob/main/whisper/tokenizer.py")
+```{r}
+# 如果檔案不是 wav 要先轉檔
+av_audio_convert("test.mp3", output = "test.wav", format = "wav", sample_rate = 16000)
+
+model <- whisper("medium")
+trans <- predict(model, newdata = "test.wav", language = "chinese", n_threads = 2)
+
+saveRDS(trans, file="trans.RData")
+
+scripts<-data.frame(trans$data)
+fwrite(scripts,"scripts.csv",row.names=FALSE)
+```
+
