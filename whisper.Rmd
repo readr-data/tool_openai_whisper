@@ -1,12 +1,12 @@
 ---
 title: "R Notebook"
 ---
-* 此文檔紀錄如何用 R 來使用 OpenAI Whisper 語音轉逐字稿的服務
-* 你也可以使用此替代軟體 [MacWhisper]("https://goodsnooze.gumroad.com/l/macwhisper")，但免費版只支援到 Small 模型。你可以先試試看，若準確度不佳，再來考慮此份代碼
+* 此文檔紀錄如何用 R 套件 [audio.whisper](https://github.com/bnosac/audio.whisper)來使用 OpenAI Whisper 語音轉逐字稿的服務
+* 你也可以使用此替代軟體 [MacWhisper](https://goodsnooze.gumroad.com/l/macwhisper)，但免費版只支援到 Small 模型。你可以先試試看，若準確度不佳，再來考慮此份代碼
 * 建議將此 .Rmd 複製到你的專案資料夾使用，避免覆蓋掉原檔案
 
 
-* 測試檔案為 test.mp3 [來源]("https://www.youtube.com/watch?v=GwtqSt8UqSo")
+* 測試檔案為 test.mp3 [來源](https://www.youtube.com/watch?v=GwtqSt8UqSo)
 * 成果：scripts.csv
 
 # 安裝套件（一台電腦只需要一次）
@@ -33,7 +33,7 @@ av_audio_convert("test.mp3", output = "test.wav", format = "wav", sample_rate = 
 ```
 
 # 載入 model
-* whisper 有 6 種模型（tiny, base, small, medium, large, large-v2），愈大的模型辨識愈準確，但也更吃資源、需要更長的時間 [文件參考 Available models and languages 那一節]("https://github.com/openai/whisper/blob/main/README.md")
+* whisper 有 6 種模型（tiny, base, small, medium, large, large-v2），愈大的模型辨識愈準確，但也更吃資源、需要更長的時間 [文件參考 Available models and languages 那一節](https://github.com/openai/whisper/blob/main/README.md)
 * 執行代碼後，務必確認系統訊息中沒有 failed 等相關字樣才能進行下一步，不然會 crush
 * 這行代碼是從雲端下載模型。會先偵測資料夾中有沒有對應的模型，若無，便會自動下載。下載後，你的資料夾會出現 ggml-[模型名稱].bin 的檔案（轉完後可以刪除，以節省電腦空間）。
 * 若出現以下錯誤訊息，就直接將 download from 後面那段網址貼到瀏覽器，瀏覽器會自行下載。下載完將檔案拉回資料夾，再執行一次代碼即可
@@ -48,7 +48,7 @@ model <- whisper("medium")
 ```
 
 # 音檔轉錄
-* [可用語言列表]("https://github.com/openai/whisper/blob/main/whisper/tokenizer.py")
+* [可用語言列表](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py)
 ```{r}
 trans <- predict(model, newdata = "test.wav", language = "english", n_threads = 2)
 scripts<-data.frame(trans$data)
