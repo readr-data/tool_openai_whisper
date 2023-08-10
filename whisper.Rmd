@@ -36,11 +36,9 @@ av_audio_convert("test.mp3", output = "test.wav", format = "wav", sample_rate = 
 * whisper 有 6 種模型（tiny, base, small, medium, large, large-v2），愈大的模型辨識愈準確，但也更吃資源、需要更長的時間 [文件參考 Available models and languages 那一節](https://github.com/openai/whisper/blob/main/README.md)
 * 執行代碼後，務必確認系統訊息中沒有 failed 等相關字樣才能進行下一步，不然會 crush
 * 這行代碼是從雲端下載模型。會先偵測資料夾中有沒有對應的模型，若無，便會自動下載。下載後，你的資料夾會出現 ggml-[模型名稱].bin 的檔案（轉完後可以刪除，以節省電腦空間）。
-* 若出現以下錯誤訊息，就直接將 download from 後面那段網址貼到瀏覽器，瀏覽器會自行下載。下載完將檔案拉回資料夾，再執行一次代碼即可
+* 若出現錯誤訊息導致下載失敗，直接將下列網址貼到瀏覽器，瀏覽器會自行下載（若要換成其他模型可以直接改網址）。下載完將檔案拉回資料夾，再執行一次代碼即可
 ```
-Something went wrong
-Error in utils::download.file(url = url, destfile = to, mode = "wb") : 
-  download from 'https://huggingface.co/datasets/ggerganov/whisper.cpp/resolve/main/ggml-medium.bin' failed
+https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.bin
 ```
 * 上述錯誤常出現在大模型的下載，會因不明原因導致模型下載不完全
 ```{r}
